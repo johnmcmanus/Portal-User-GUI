@@ -158,18 +158,11 @@ def create_csv
 	p $Check_Box_Threat_Detect.variable.value
 
 	File.open("#{$company_entry.value}_create.csv", 'w') { |file| 
-		
-    $count = 0
-    $num = 3
-    while $count < $num do
     $user_cells.each do |array_cell_val|
       array_cell_val.each do |cell_val|
-			file.write(cell_val.value)
-			file.write(",")
-      $count +=1
-    end
-  end
-end
+		    file.write(cell_val.value)
+		    file.write(",")
+      end
 		file.write($company_entry.value)
 		file.write(",")
 		file.write($servicenow_entry.value)
@@ -177,8 +170,8 @@ end
     if $Check_Box_Support.onvalue != nil then file.write("17") end
     file.write($support_type.value)
     file.write("\n")
-	}	
-
+  end
+  }
   p $user_cells.inspect
 end
 
