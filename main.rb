@@ -97,7 +97,7 @@ end
 
 
 $Check_Box_Threat_Protect_NoFM = TkCheckButton.new(@root) do
-  text "Threat Protect no FM"
+  text "Threat Protect\n no FM"
   relief "groove"
   height 3
   width 12
@@ -120,8 +120,12 @@ end
 @colval2 = 2
 @colval3 = 3
 
+@count_cell_num = 0
+
+
 def add_user_cell
-	@entry1var = TkVariable.new
+	
+  @entry1var = TkVariable.new
 	@entry2var = TkVariable.new
 	@entry2var = TkVariable.new
 
@@ -141,30 +145,41 @@ def add_user_cell
 	@entry3.grid('row'=> @rowval, 'column'=> @colval3, 'sticky'=> 'nsew')
 	@rowval = @rowval + 5
 	
-	$user_cells.push(@entry1)
-	$user_cells.push(@entry2)
-	$user_cells.push(@entry3)
+  entry_array = [@entry1,@entry2,@entry3]
+  $user_cells.push(entry_array)
+  p $user_cells.inspect
+  
 end
 
 
 def create_csv
 	p "Creating CSV File to run"
-
 	p $Check_Box_Support.variable.value
 	p $Check_Box_Threat_Detect.variable.value
 
 	File.open("#{$company_entry.value}_create.csv", 'w') { |file| 
-		$user_cells.each do |cell_val| 
+		
+    $count = 0
+    $num = 3
+    while $count < $num do
+    $user_cells.each do |array_cell_val|
+      array_cell_val.each do |cell_val|
 			file.write(cell_val.value)
 			file.write(",")
-		end
-		file.write($support_type.value)
-		file.write(",")
-		file.write($company_entry.value) 
+      $count +=1
+    end
+  end
+end
+		file.write($company_entry.value)
 		file.write(",")
 		file.write($servicenow_entry.value)
-
+    file.write(",")
+    if $Check_Box_Support.onvalue != nil then file.write("17") end
+    file.write($support_type.value)
+    file.write("\n")
 	}	
+
+  p $user_cells.inspect
 end
 
 
